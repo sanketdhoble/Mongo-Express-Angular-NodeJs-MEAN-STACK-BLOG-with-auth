@@ -15,4 +15,8 @@ NODEJS:<br />
 ANGULARJS:<br />
 Route Restrictions to some pages requiring user login.<br />
 handling server authentication with localStorage.<br />
-
+<br />
+RUNNING APP:<br />
+1)download or clone this project.<br />
+2)Inside the folder, command : *npm install*<br />
+3)Run the app : nodejs server.js or nodemon server.js
