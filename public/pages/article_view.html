@@ -1,0 +1,75 @@
+	 <div class=" primary_image" >
+	   <img ng-if="getBlog.imageUrl!=''" class="centered-and-cropped" style="height: 400px;" ng-src="{{getBlog.imageUrl}}">
+	    <img ng-if="getBlog.imageUrl==''" class="centered-and-cropped" style="height: 400px;" src="http://english.tw/wp-content/themes/qaengine/img/default-thumbnail.jpg">
+	 </div>
+	 <div class="clearfix"></div>
+	
+	<div class="col-sm-12">
+		  <div class="col-sm-8 border_right">
+			   <div class="col-sm-12">
+			        <h1><b><p style="font-family:sans-serif;font-weight: 800;">{{getBlog.title}}</p></b></h1>	  
+			   </div>
+
+			   <div class="col-sm-11">
+			   <p>By <span class="img_title">{{getBlog.author}}</span> | {{getBlog.updated_at | date}}</p>
+			   <hr  align="center"> 
+			   </div>
+
+		     <div class="clearfix"></div>
+		  
+		    <div class="col-sm-10 col-sm-offset-1" style="min-height: 200px">
+		 	    <div><b> {{getBlog.body}}</b></div>
+			</div>
+			<div class="col-sm-12">
+			    <hr>
+			</div>
+			<div class="col-sm-12">
+				<h4><b><u>Comments</u></b></h4>
+			</div>
+			<div class="container_comments" style=" background-color: lightblue !important;">
+				<div class="col-sm-12" ng-repeat="k in getBlog.comments">
+					<div class="col-sm-2">
+						<img src="imgs/noavatar.png" style="transform:scale(0.7);margin-top:-8px;margin-left: -25px">
+					</div>
+					<div class="col-sm-9" style="margin-left:-20px">
+						<p><span style="color:#0077b5">{{k.person}}</span>  |  {{k.created_at | date:"d,MMM-yy h:mm a" }}<span class="pull-right">UPVOTES-{{k.upvotes}}</span></p>
+						<p>{{k.comment}}</p>
+						
+					</div>
+
+				</div>
+			</div>
+	      </div>
+	      <div class="col-sm-4">
+		      	 <div class="col-sm-12 featured_article_style"><h2>Featured Articles </h2>
+		      	 </div>
+		      	 <div class="col-sm-12 mar_bottom line_bottom">
+			    	      <div class="img-wrapper">
+			    	        <img src="imgs/blog/img5.jpg">
+			    	      </div>
+			    	   <h4><b><p><a href="">Better Late Than Never: What To Do When a Competitor Beats You to Market</a></p></b></h4>	
+			    	   <p>By <span class="img_title">Healthcoco team</span> | Aug 3, 2016 </p>	
+			      </div>
+			      <div class="col-sm-12 mar_bottom line_bottom">
+			    	      <div class="img-wrapper">
+			    	        <img src="imgs/blog/img6.jpg">
+			    	      </div>
+			    	   <h4><b><p><a href="">With a $20 Investment, This Unemployed Veteran Fueled a Million-dollar Business</a></p></b></h4>	
+			    	   <p>By <span class="img_title">Healthcoco team</span> | Aug 3, 2016 </p>	
+			     </div>
+			     <div class="col-sm-12 mar_bottom line_bottom">
+			    	      <div class="img-wrapper">
+			    	        <img src="imgs/blog/img2.jpg">
+			    	      </div>
+			    	   <h4><b><p><a href="">Free Google Chrome Extensions Every Entrepreneur Should Install</a></p></b></h4>	
+			    	   <p>By <span class="img_title">Healthcoco team</span> | Aug 3, 2016 </p>
+			     </div>
+			     <div class="col-sm-12 mar_bottom line_bottom">
+	    	      <div class="img-wrapper">
+	    	        <img src="imgs/blog/img3.jpg">
+	    	      </div>
+	    	   <h4><b><p><a href="">How to Outsource Effectively and Earn Back Your Time</a></p></b></h4>	
+	    	   <p>By <span class="img_title">Healthcoco team</span> | Aug 3, 2016 </p>	
+	    	</div>
+           </div>
+	</div>
