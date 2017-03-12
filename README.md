@@ -20,3 +20,5 @@ RUNNING APP:<br />
 1)download or clone this project.<br />
 2)Inside the folder, command : *npm install*<br />
 3)Run the app : nodejs server.js or nodemon server.js
+
+*APP RUNNING* on Heroku server @ https://fast-retreat-68280.herokuapp.com .
