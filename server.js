@@ -14,7 +14,7 @@
         secret: '2C44-4D44-WppQ38S',
         resave: true,
         saveUninitialized: true,
-        cookie: { maxAge: 20000 }
+        cookie: { maxAge: 60000*5 } //5 mins
     }));
 
     // configuration ===============================================================
