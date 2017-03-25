@@ -2,10 +2,13 @@
 	<div ng-include="'pages/header.html'"></div>
 	 <div class="clearfix"></div>
 	 <hr width="80%" align="center">
-    <div class="col-sm-12">
+    <div class="col-sm-12 profile_content">
        
        <div class="col-sm-6 col-sm-offset-3 font_style">
-          COOL DEMO BLOG :D!
+          COOL DEMO BLOG :D
+       </div>
+       <div class="col-sm-8 col-sm-offset-4">
+        <input type="text" ng-model="searchTerm" ng-change="searchBlog(searchTerm)" ng-model-options='{ debounce: 700 }' class="search-option" placeholder="Search blog" >
        </div>
     </div>
     <div class="clearfix"></div>

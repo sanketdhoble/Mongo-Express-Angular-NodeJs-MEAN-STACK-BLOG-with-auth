@@ -108,12 +108,20 @@ module.exports = function(app) {
         .exec(function(err, data) {
             if (err)
                 res.send(err)
+            var userId;
+             if(req.query.userId!=undefined)
+                 blog.Blog.find({userId:req.query.userId}).count(function(err, count){
+                    console.log("Number of docs: ", count );
+                    res.json({blogs:data,count:count});
+
+                });
+             else{
              blog.Blog.find().count(function(err, count){
                     console.log("Number of docs: ", count );
                     res.json({blogs:data,count:count});
 
                 });
-            
+            }
         });
 
     });
