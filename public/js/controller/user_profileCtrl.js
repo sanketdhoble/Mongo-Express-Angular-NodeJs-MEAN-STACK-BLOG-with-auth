@@ -1,8 +1,8 @@
-blogApp.controller('main_pageCtrl', function($scope,$rootScope,apiFactory,$anchorScroll, $http,$window,$location,$routeParams) {
+blogApp.controller('user_profileCtrl', function($scope,$rootScope,apiFactory,$anchorScroll, $http,$window,$location,$routeParams) {
 
-       $rootScope.userName=localStorage.userName;
-       $rootScope.userId=localStorage.userId;
-       // $location.search({})  //clear all parameters at once
+	$scope.userName=localStorage.userName;
+    $scope.userId=$routeParams.id;
+        
         $scope.hidePagination=false;
 
         // console.log(location.search);
@@ -39,7 +39,8 @@ blogApp.controller('main_pageCtrl', function($scope,$rootScope,apiFactory,$ancho
                 params:{
                   'page':$scope.pageno,
                   'size':'10',
-                  'searchTerm':$scope.searchTerm
+                  'searchTerm':$scope.searchTerm,
+                  'userId':$scope.userId
               }
           }
           
@@ -83,34 +84,34 @@ blogApp.controller('main_pageCtrl', function($scope,$rootScope,apiFactory,$ancho
         $scope.getBlogFunction($scope.pageno);
 
 
-         $scope.searchBlog=function(searchTerm)
-              {
-                $scope.searchTerm=searchTerm;
-                // $scope.pageno=0;
-                // sessionStorage.pageno=0;
+         // $scope.searchBlog=function(searchTerm)
+         //      {
+         //        $scope.searchTerm=searchTerm;
+         //        // $scope.pageno=0;
+         //        // sessionStorage.pageno=0;
                 
-                console.log(sessionStorage.pageno);
-                if($scope.searchTerm!="")
-                {
-                 $scope.activeButton=0;
-                 $scope.pageNew=parseInt(sessionStorage.page);//using this pageNew in below else statement only
-                 $scope.pagenoNew=parseInt(sessionStorage.pageno);
-                 $scope.page=0;
-                 $scope.pageno=0;
+         //        console.log(sessionStorage.pageno);
+         //        if($scope.searchTerm!="")
+         //        {
+         //         $scope.activeButton=0;
+         //         $scope.pageNew=parseInt(sessionStorage.page);//using this pageNew in below else statement only
+         //         $scope.pagenoNew=parseInt(sessionStorage.pageno);
+         //         $scope.page=0;
+         //         $scope.pageno=0;
                  
-                }else{
-                sessionStorage.pageno=$scope.pagenoNew;
-                $scope.pageno=parseInt(sessionStorage.pageno);
-                sessionStorage.page=$scope.pageNew;
-                $scope.page=parseInt(sessionStorage.page);
-                $scope.activeButton=$scope.pagenoNew;
-                console.log('yo');
+         //        }else{
+         //        sessionStorage.pageno=$scope.pagenoNew;
+         //        $scope.pageno=parseInt(sessionStorage.pageno);
+         //        sessionStorage.page=$scope.pageNew;
+         //        $scope.page=parseInt(sessionStorage.page);
+         //        $scope.activeButton=$scope.pagenoNew;
+         //        console.log('yo');
                  
-                }
+         //        }
 
-                $scope.getBlogFunction(($scope.page+$scope.pageno));
-                //$scope.activeButton=0;
-              };
+         //        $scope.getBlogFunction(($scope.page+$scope.pageno));
+         //        //$scope.activeButton=0;
+         //      };
 
             $scope.pagingNext=function(page)
             {
@@ -191,8 +192,15 @@ blogApp.controller('main_pageCtrl', function($scope,$rootScope,apiFactory,$ancho
             }
           }
 
-         
 
-          
 
-  });
+
+
+
+
+
+
+
+
+
+});

@@ -6,7 +6,7 @@ var UserSchema   = new Schema({
     name : {type:String,required:true,dropDups: true },
     password:{type: String,required:true},
     done : Boolean,
-    email:String,
+    email:{type:String,required:true},
     userId: {
         type: String,
         default: function() {

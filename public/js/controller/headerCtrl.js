@@ -1,7 +1,7 @@
-blogApp.controller('headerCtrl', function($scope,apiFactory,$anchorScroll, $http,$window,$location,$routeParams) {
+blogApp.controller('headerCtrl', function($scope,$rootScope,apiFactory,$anchorScroll, $http,$window,$location,$routeParams) {
 
 
-
+      $scope.show_reg=true;
         $scope.registration=function()
           {
             var data={
@@ -12,15 +12,17 @@ blogApp.controller('headerCtrl', function($scope,apiFactory,$anchorScroll, $http
 
             apiFactory.registerUser(data)
             .then(function (data,response) {
-              $window.alert("Registration successful");
+             
               $scope.postResponse = data.data;
               console.log($scope.postResponse);
+               $window.alert("Registration successful,login to view blogs");
               $scope.userName=$scope.postResponse.username;
               $scope.userId=$scope.postResponse.userId;
+              $scope.show_reg=true;
             })
             .catch(function(response) {
               if(response.status==409)
-                  {
+                  { console.log(response);
                     $window.alert("Username already present, Register with another one :)");
 
                   }
@@ -48,13 +50,14 @@ blogApp.controller('headerCtrl', function($scope,apiFactory,$anchorScroll, $http
               
               $scope.postResponse = data.data;
               console.log($scope.postResponse);
+              console.log($scope.postResponse.data);
               localStorage.session=$scope.postResponse.session;
-              console.log(localStorage.session);
-
-              $scope.userName=$scope.postResponse.username;
-              $scope.userId=$scope.postResponse.userId;
+              localStorage.userName=$scope.postResponse.data.name;
+              console.log(localStorage.userName);
+              localStorage.userId=$scope.postResponse.data.userId;
+              localStorage.email=$scope.postResponse.data.email;
               $http.defaults.headers.common.token = localStorage.session;
-              $window.alert("login successful");
+              $window.alert("login successful :)");
               $location.path('/');
             })
             .catch(function(response) {
@@ -73,9 +76,20 @@ blogApp.controller('headerCtrl', function($scope,apiFactory,$anchorScroll, $http
 
             })
 
+          };
 
+           $scope.logout = function () {
 
-          }
+            // call logout from service
+            apiFactory.logout()
+              .then(function () {
+                delete localStorage.session;
+                 $http.defaults.headers.common.token = '';
+                 $location.search({});
+                 $location.path('/login');
 
+              });
+
+          };
 
 });

@@ -17,32 +17,48 @@ module.exports = function(app) {
     //Register User
     app.post('/register', function(req, res) {
 
-        User.create({
-            name : req.body.name,
-            password:req.body.password,
-            email:req.body.email,
-            done : true
-          }, function(err, userDetails) {
-              if (err) {
-                if(err.code==11000)
-                    return res.status(409).json({ success: false, message: 'username or email already taken'})
-                else {
-                 return res.status(401).send(err);
-                 }
-              }
+        
+        User.findOne({email: req.body.email}, function(err, user) {
+
+         if (err) throw err;
+
+         if (user) {
+            res.status(409).json({ success: false, message: 'Email already taken'});
+         } 
+         else
+         {
 
 
-            
-            // res.json(userDetails);
-            //console.log(userDetails);
-            // get and return all the todos after you create another
-                User.find({'userId':userDetails.userId},function(err, user) {
-                    if (err)
-                        res.send(err);
-                    res.json(user);
-                });
-            
-        });    
+            User.create({
+                name : req.body.name,
+                password:req.body.password,
+                email:req.body.email,
+                done : true
+              }, function(err, userDetails) {
+                  if (err) { 
+                    // if(err.code==11000)
+                    //     return res.status(409).json({ success: false, message: 'username or email already taken'})
+                    // else {
+                     return res.status(401).send(err);
+                     // }
+                  }
+                  else
+                    return res.json(userDetails);
+
+
+                
+                // res.json(userDetails);
+                //console.log(userDetails);
+                // get and return the user you create it
+                    // User.find({'userId':userDetails.userId},function(err, user) {
+                    //     if (err)
+                    //         res.send(err);
+                    //     res.json(user);
+                    // });
+                
+            }); 
+          }
+      })   
 
     });
 
@@ -328,7 +344,7 @@ module.exports = function(app) {
 
           });
     });
-    app.get('/logout',auth, function (req, res) {
+    app.get('/logout', function (req, res) {
       req.session.destroy();
       res.send("logout success!");
     });

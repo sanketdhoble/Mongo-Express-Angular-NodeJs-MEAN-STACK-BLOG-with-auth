@@ -83,6 +83,12 @@ blogApp.config(function($routeProvider) {
             controller  : 'main_pageCtrl',
             requireLogin:true
         },
+
+         "/profile/:id": {
+            templateUrl : 'pages/user_profile.html',
+            controller  : 'user_profileCtrl',
+            requireLogin:true
+        },
         
         "/login": {
             templateUrl : 'pages/login.html',

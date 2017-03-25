@@ -1,23 +1,12 @@
 <div class="col-sm-12">
-	<div ng-include="'pages/header.html'"></div>
-	 <div class="clearfix"></div>
-	 <hr width="80%" align="center">
-    <div class="col-sm-12">
-       
-       <div class="col-sm-6 col-sm-offset-3 font_style">
-          COOL DEMO BLOG :D!
-       </div>
-    </div>
-    <div class="clearfix"></div>
-    <hr width="80%" align="center">
-
-    <div class="container">
-
-      <div class="col-sm-8 border_right ">
+  <div ng-include="'pages/header.html'"></div>
+  <div class="profile_content">
+	<span style="text-align: center;"><h3><b>User Blogs</b></h3></span>	
+	<div class="container">
             <div ng-repeat="blogs in getBlogs track by $index">
-            	<div class="clearfix" ng-if="$index % 2 == 0"></div>
+            	<div class="clearfix" ng-if="$index % 3 == 0"></div>
 	            
-			    	<div class="col-sm-6 mar_bottom hover_div">
+			    	<div class="col-sm-4 mar_bottom hover_div">
 			    	<a href="#article/{{blogs._id}}">
 		    	      <div class="img-wrapper" ng-if="blogs.imageUrl!=''">
 		    	        <img ng-src="{{blogs.imageUrl}}" class="img-responsive">
@@ -48,40 +37,6 @@
 			</div>
       </div>
 
-      <!-- Featured Articles (Trending) -->
-      <div class="col-sm-4">
-      	 <div class="col-sm-12 featured_article_style"><h2>Featured Articles </h2>
-      	 </div>
-      	 <div class="col-sm-12 mar_bottom line_bottom">
-	    	      <div class="img-wrapper">
-	    	        <img src="imgs/blog/img5.jpg">
-	    	      </div>
-	    	   <h4><b><p><a href="">Better Late Than Never: What To Do When a Competitor Beats You to Market</a></p></b></h4>	
-	    	   <p>By <span class="img_title">Healthcoco team</span> | Aug 3, 2016 </p>	
-	      </div>
-	      <div class="col-sm-12 mar_bottom line_bottom">
-	    	      <div class="img-wrapper">
-	    	        <img src="imgs/blog/img6.jpg">
-	    	      </div>
-	    	   <h4><b><p><a href="">With a $20 Investment, This Unemployed Veteran Fueled a Million-dollar Business</a></p></b></h4>	
-	    	   <p>By <span class="img_title">Healthcoco team</span> | Aug 3, 2016 </p>	
-	     </div>
-	     <div class="col-sm-12 mar_bottom line_bottom">
-	    	      <div class="img-wrapper">
-	    	        <img src="imgs/blog/img2.jpg">
-	    	      </div>
-	    	   <h4><b><p><a href="">Free Google Chrome Extensions Every Entrepreneur Should Install</a></p></b></h4>	
-	    	   <p>By <span class="img_title">Healthcoco team</span> | Aug 3, 2016 </p>
-	     </div>
-      
-      </div>
+  </div>
 
-     
-    </div>
-    <div class="footer">
-		    <br><br><br><br><br><br><br><br><br><br><br><br>
-		    
-
-  
-    </div>
 </div>

@@ -10,7 +10,9 @@ p>a:hover {
     color:blue;
 	text-decoration:none;
 }*/
-	
+.mar_top30{
+  margin-top: 30px;
+}
 
 p>a:link{
   color:black;
@@ -184,6 +186,13 @@ button[disabled]{cursor:not-allowed !important; opacity:0.5 !important;}
 
 .container_comments{
   background:#bab6b6;
+}
+.login_reg_style{
+margin-top:5px;font-size:16px}
+.profile_content{
+  min-height: 400px;
+  background-color:rgba(148, 148, 148, 0.05);
+
 }
 /*.move_right{margin-left:70px;}*/
 
