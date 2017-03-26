@@ -89,6 +89,7 @@ hr.vertical{
 
 .img_title{font-family:arial;font-size:14px;color:#0077b5;}
 .mar_bottom{margin-bottom:25px;}
+.mar_bottom10{margin-bottom: 10px;}
 .featured_article_style{font-family: verdana;color:rgb(255, 165, 0);margin-bottom:20px;}
 .line_bottom{
 	border-bottom: 1px solid grey;
@@ -191,7 +192,7 @@ button[disabled]{cursor:not-allowed !important; opacity:0.5 !important;}
 margin-top:5px;font-size:16px}
 .profile_content{
   min-height: 400px;
-  background-color:rgba(148, 148, 148, 0.05);
+  background-color:rgba(148, 148, 148, 0.08);
 
 }
 /*.move_right{margin-left:70px;}*/
