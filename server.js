@@ -14,7 +14,8 @@
         secret: '2C44-4D44-WppQ38S',
         resave: true,
         saveUninitialized: true,
-        cookie: { maxAge: 60000*20 } //5 mins
+        cookie: { maxAge: 60000*60 }, //60 min
+        rolling: true   //will refresh expiration period back to maxAge :D
     }));
 
     // configuration ===============================================================

@@ -1,4 +1,4 @@
-blogApp.controller('headerCtrl', function($scope,$rootScope,apiFactory,$anchorScroll, $http,$window,$location,$routeParams) {
+blogApp.controller('headerCtrl', function($scope,$rootScope,apiFactory,$anchorScroll, $http,$window,$location,$routeParams,$timeout) {
 
 
       $scope.show_reg=true;
@@ -57,7 +57,10 @@ blogApp.controller('headerCtrl', function($scope,$rootScope,apiFactory,$anchorSc
               localStorage.userId=$scope.postResponse.data.userId;
               localStorage.email=$scope.postResponse.data.email;
               $http.defaults.headers.common.token = localStorage.session;
-              $window.alert("login successful :)");
+              $rootScope.FlashLoginSuccess=true;
+              $timeout(function () {
+                  $rootScope.FlashLoginSuccess=false;
+              },3000);
               $location.path('/');
             })
             .catch(function(response) {
@@ -91,5 +94,26 @@ blogApp.controller('headerCtrl', function($scope,$rootScope,apiFactory,$anchorSc
               });
 
           };
+          $scope.stop = function(){
+          $timeout.cancel(stopped);
+            } 
+          $scope.counter = 60*60;
+          var stopped;
+          $scope.countdown = function() {
+          stopped = $timeout(function() {
+            //console.log($scope.counter);
+          $scope.counter--;  
+          if($scope.counter==0) 
+          {
+            console.log("session Expired");
+            $scope.stop();
+            return;
+          }
+          $scope.countdown();   
+          }, 1000);
+        };
+        
+        
+
 
 });

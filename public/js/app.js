@@ -1,5 +1,5 @@
 
-	var blogApp = angular.module('blogApp', ['ngRoute', 'naif.base64','ui.bootstrap']);
+	var blogApp = angular.module('blogApp', ['ngRoute', 'naif.base64','ui.bootstrap','ngSanitize','ngCkeditor']);
 
 
 
@@ -53,57 +53,85 @@
                           }
                    };
    
-
-
-
-  /*//directive to get file name 
-app.directive('fdInput', ['$timeout', function ($timeout) {
-    return {
-        link: function (scope, element, attrs) {
-            element.on('change', function  (evt) {
-                var files = evt.target.files;
-                console.log(files[0].name);
-                console.log(files[0].size);
+    blogApp.directive('ckEditor', function () {
+        return {
+            require: '?ngModel',
+            link: function (scope, elm, attr, ngModel) {
+            var ck = CKEDITOR.replace(elm[0]);
+            if (!ngModel) return;
+            ck.on('instanceReady', function () {
+                ck.setData(ngModel.$viewValue);
             });
-        }
-    }
-}]);*/
+            function updateModel() {
+                scope.$apply(function () {
+                ngModel.$setViewValue(ck.getData());
+                });
+            }
+            ck.on('change', updateModel);
+            ck.on('key', updateModel);
+            ck.on('dataReady', updateModel);
+
+            ngModel.$render = function (value) {
+                ck.setData(ngModel.$viewValue);
+            };
+            }
+        };
+        });
+
+
+
 
 blogApp.config(function($routeProvider) {
-    		window.routes =
-    {
-        "/article/:id":{
+   $routeProvider
+
+			// .when('/',  {
+			// 	        templateUrl : function(){
+			// 	            if (localStorage.Authorised_user=='false'){
+			// 	                  return  'index.html';
+			// 	                }
+			// 	            else if(localStorage.Authorised_user=='true'){
+			// 	                  return 'pages/clinic.html';
+			// 	                }
+			// 	        },
+			// 	controller  : 'clinicCtrl'
+
+			// })			
+
+			
+    // 		window.routes =
+    // {
+       .when( '/article/:id',{
           templateUrl : 'pages/article_view.html',
             controller  : 'article_viewCtrl',
             requireLogin:true
-        },
+        })
 
-        "/": {
+       .when( '/', {
             templateUrl : 'pages/main_page.html',
             controller  : 'main_pageCtrl',
             requireLogin:true
-        },
+        })
 
-         "/profile/:id": {
+         .when('/profile/:id', {
             templateUrl : 'pages/user_profile.html',
             controller  : 'user_profileCtrl',
             requireLogin:true
-        },
+        })
         
-        "/login": {
+        .when('/login', {
             templateUrl : 'pages/login.html',
             controller  : 'headerCtrl',
             requireLogin:false
-        },
-        "/welcome":{
+        })
+        .when('/welcome',{
           templateUrl : 'pages/welcome.html',
             controller  : '',
             requireLogin:false
-        }
-    };
-    for(var path in window.routes) {
-        $routeProvider.when(path, window.routes[path]);
-    }
+        })
+    // };
+    // for(var path in window.routes) {
+    //     $routeProvider.when(path, window.routes[path]);
+    // }
     $routeProvider.otherwise({redirectTo: '/welcome'});
 
    //  $routeProvider	
@@ -127,18 +155,7 @@ blogApp.config(function($routeProvider) {
 	});
 
 
-// Healthcoco_webApp.run(['$rootScope', function ($rootScope) {
-//     $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
-//         $rootScope.title = current.$$route.title;
-//         $rootScope.metatitle = current.$$route.metatitle;
-//         $rootScope.metaurl = current.$$route.metaurl;
-//         $rootScope.description = current.$$route.description;
-//         $rootScope.keywords = current.$$route.keywords;
-//         $rootScope.featureimage = current.$$route.featureimage;
-//         $rootScope.favicon = current.$$route.favicon;
-//     });
 
-//  }]);
   blogApp.run(function ($rootScope, $http,$route, $location) {
         // keep user logged in after page refresh
         if (localStorage.session) {

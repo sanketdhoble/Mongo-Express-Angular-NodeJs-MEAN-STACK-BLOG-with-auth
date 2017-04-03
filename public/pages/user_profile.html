@@ -1,9 +1,20 @@
 <div class="col-sm-12">
   <div ng-include="'pages/header.html'"></div>
   <div class="profile_content">
-	<span style="text-align: center;"><h3><b>User Blogs</b></h3></span>	
-	<div class="container">
-            <div ng-repeat="blogs in getBlogs track by $index">
+		
+  	<div class="container" ng-show="userBlogs">
+					<div class="col-sm-12">
+						<button style="margin-top: 26px;" ng-click="userBlogs=false" class=" btn btn-default pull-left">Add new Post</button>
+						<span style="text-align: center;"><h3 style="padding:10px 10px;"><b>Your Posts</b></h3></span>
+					</div>
+					<div ng-show="BlogPostFlashMessage" class="col-sm-4 alert alert-success fade in div_pos ">
+            <a href=""  class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>Success!</strong> Blog Posted/Updated succesfully :)
+	    		</div>
+					
+					
+					<div class="no-post-profile" ng-show="no_data_div" style="">You are yet to post any Blog! </div>
+          <div ng-repeat="blogs in getBlogs track by $index">
             	<div class="clearfix" ng-if="$index % 3 == 0"></div>
 	            
 			    	<div class="col-sm-4 mar_bottom hover_div">
@@ -21,7 +32,7 @@
 		    	
 		    </div> 	
       
-      		<div class="col-sm-12 blog-pages">
+      		<div class="col-sm-12 blog-pages" ng-hide="hidePagination">
 			      <button class="page-btn page-lg-btn" href="" ng-disabled="value" ng-click="pagingPrev(page);activeButton = 0">Previous</button>
 			      <button class="page-btn" href="" ng-class="{active : activeButton == 0}" ng-disabled="disable(0)" ng-click="pagination(0);activeButton=0">{{page*10+1}}</button>
 			      <button class="page-btn" href="" ng-class="{active : activeButton == 1}" ng-disabled="disable(1)" ng-click="pagination(1);activeButton = 1">{{page*10+2}}</button>
@@ -34,9 +45,72 @@
 			      <button class="page-btn" ng-class="{active : activeButton == 8}" href=""  ng-disabled="disable(8)" ng-click="pagination(8);activeButton = 8">{{page*10+9}}</button>
 			      <button class="page-btn" ng-class="{active : activeButton == 9}" href="" ng-disabled="disable(9)" ng-click="pagination(9);activeButton = 9">{{page*10+10}}</button>
 			      <button class="page-btn page-lg-btn" class="btn-pageno"  href="" ng-disabled="disable(9)" ng-click="pagingNext(page);activeButton = 0">Next</button>
-			</div>
-      </div>
+				 </div>
+    </div>
+		<div class="container" ng-hide="userBlogs">
+				<div class="col-sm-12">
+						<button style="margin-top: 26px;" ng-click="userBlogs=true" class=" btn btn-default pull-left">Show My Blogs</button>
+						<span style="text-align: center;"><h3 style="padding:10px 10px;"><b>Add Posts</b></h3></span>
+				</div>
+				<div class="col-sm-12"    style=" margin-top: 35px;">
+						<div class="col-sm-12">
+								<div class="col-sm-6">
+									<form class="form-horizontal" role="form">
+													<div class="form-group">
+													<label class="col-sm-3">Title</label>
+														<div class="col-sm-9">  
+															<input ng-model="title" class="form-control input-sm"  placeholder="Title">
+														</div>     
+													</div>
+													<div class="form-group">
+														<label class="col-sm-3">Title Image url:</label>
+														<div class="col-sm-9">  
+															<input ng-model="imageUrl" class="form-control input-sm"  placeholder="Image Url">
+														</div>     
+													</div
+									</form>
+								</div>
+							
+							</div>
+
+							<div class="col-sm-12">
+						
+							<h3>Blog Article Editor</h3>
+					
+							<textarea ckeditor="editorOptions" ng-model="body"></textarea>
+				
+						</div>
+						<div class="col-sm-12 mar_top10">
+								<div class="col-sm-6">
+									<button class="btn btn-success btn-default" type="button" ng-click="addBlog()"> Add New Blog</button> and redirect to blogList
+								</div>
+
+								<div class="col-sm-6">
+										<button class="btn btn-success btn-default" type="button" ng-click="updateBlog(content,title)"> Update Blog</button>       
+									</div>
+						</div>
+						<div style="margin-top:1000px">
+							.
+						</div>	       
+				
+			 </div>
+		</div>
+			
 
   </div>
 
 </div>
+<div class="col-sm-12" style="background-color: lightgrey">
+Hello world
+</div>
+
+<script>
+	CKEDITOR.editorConfig = function (config) {
+    config.language = 'es';
+    config.uiColor = '#F7B42C';
+    config.height = 300;
+    config.toolbarCanCollapse = true;
+
+};
+CKEDITOR.replace('editor1');
+	</script>

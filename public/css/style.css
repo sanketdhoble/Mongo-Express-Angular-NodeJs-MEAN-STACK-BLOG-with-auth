@@ -195,6 +195,28 @@ margin-top:5px;font-size:16px}
   background-color:rgba(148, 148, 148, 0.08);
 
 }
+.no-post{    
+    font-size: 40px;
+    color: #aaaaaa;
+    margin-left: 190px;
+    margin-top: 50px;
+    margin-bottom: 70px;
+    }
+ .no-post-profile{  
+    text-align: center;  
+    font-size: 25px;
+    color: #aaaaaa;
+    /*margin-left: 190px;*/
+    margin-top: 50px;
+    margin-bottom: 70px;
+    }   
+.flash_div_pos{
+    margin-left: 800px;
+    position: fixed !important;
+    z-index: 2;
+    opacity: 0.9 !important;
+    margin-top: -56px;}
+
 /*.move_right{margin-left:70px;}*/
 
 /*.centered-and-cropped { object-fit: cover }*/

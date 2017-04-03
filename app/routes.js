@@ -130,7 +130,7 @@ module.exports = function(app) {
     app.get('/blog/featured',auth,function(req,res){
 
         blog.Blog.find({})
-        .limit(5)
+        .limit(4)
         .skip(0)
         .sort([[ 'upvotes', 'descending']]).exec(function(err, data) {
             if (err)
@@ -177,7 +177,7 @@ module.exports = function(app) {
 
     //update blog
     app.put('/blog/update/:id', auth,function(req, res, next) {
-
+            //instead of req.body we can use $set for specific field updates  { "$set": { "name": name, "genre": genre, "author": author, "similar": similar}}
       blog.Blog.findByIdAndUpdate(req.params.id, req.body, function (err, post) {
         if (err) 
             res.send(err);

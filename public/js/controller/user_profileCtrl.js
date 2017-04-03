@@ -1,6 +1,7 @@
-blogApp.controller('user_profileCtrl', function($scope,$rootScope,apiFactory,$anchorScroll, $http,$window,$location,$routeParams) {
+blogApp.controller('user_profileCtrl', function($scope,$rootScope,apiFactory,$anchorScroll, $http,$window,$location,$routeParams,$window,$timeout) {
 
-	$scope.userName=localStorage.userName;
+    $scope.userBlogs=true;
+	  $scope.userName=localStorage.userName;
     $scope.userId=$routeParams.id;
         
         $scope.hidePagination=false;
@@ -53,15 +54,10 @@ blogApp.controller('user_profileCtrl', function($scope,$rootScope,apiFactory,$an
             console.log($scope.getBlogs);
             if ($scope.getBlogs.length==0) {
               $scope.no_data_div=true;
-            }
-
-            //$scope.getBlogCount();
-            if($scope.getBlogs.length==0)
-            {
               $scope.hidePagination=true;
             }
             $scope.blogCount=response.data.count;
-            $scope.pages_with_content=Math.ceil($scope.blogCount/12);
+            $scope.pages_with_content=Math.ceil($scope.blogCount/10);
             $scope.blog_loader=false;
           })
           .catch(function(response) {
@@ -84,34 +80,7 @@ blogApp.controller('user_profileCtrl', function($scope,$rootScope,apiFactory,$an
         $scope.getBlogFunction($scope.pageno);
 
 
-         // $scope.searchBlog=function(searchTerm)
-         //      {
-         //        $scope.searchTerm=searchTerm;
-         //        // $scope.pageno=0;
-         //        // sessionStorage.pageno=0;
-                
-         //        console.log(sessionStorage.pageno);
-         //        if($scope.searchTerm!="")
-         //        {
-         //         $scope.activeButton=0;
-         //         $scope.pageNew=parseInt(sessionStorage.page);//using this pageNew in below else statement only
-         //         $scope.pagenoNew=parseInt(sessionStorage.pageno);
-         //         $scope.page=0;
-         //         $scope.pageno=0;
-                 
-         //        }else{
-         //        sessionStorage.pageno=$scope.pagenoNew;
-         //        $scope.pageno=parseInt(sessionStorage.pageno);
-         //        sessionStorage.page=$scope.pageNew;
-         //        $scope.page=parseInt(sessionStorage.page);
-         //        $scope.activeButton=$scope.pagenoNew;
-         //        console.log('yo');
-                 
-         //        }
-
-         //        $scope.getBlogFunction(($scope.page+$scope.pageno));
-         //        //$scope.activeButton=0;
-         //      };
+       
 
             $scope.pagingNext=function(page)
             {
@@ -160,8 +129,7 @@ blogApp.controller('user_profileCtrl', function($scope,$rootScope,apiFactory,$an
                
                 $scope.getpage($scope.total);
             }
-          // $scope.pageno=0;  //initializes each page to first pageno
-          // $scope.$evalAsync(function () {
+
               $scope.disable=function(index)
               {
                 $scope.pageno=$scope.page*10+index;
@@ -181,7 +149,6 @@ blogApp.controller('user_profileCtrl', function($scope,$rootScope,apiFactory,$an
 
                 return false;
               }
-          // });
     	    $scope.getpage=function(pageno)
           {
             $scope.pageno=pageno;
@@ -192,7 +159,89 @@ blogApp.controller('user_profileCtrl', function($scope,$rootScope,apiFactory,$an
             }
           }
 
+            // Blog editor
 
+        $scope.adminId=localStorage.adminId;
+        if($rootScope.editBlogObject!=null)
+        {
+          $scope.getBlog=$rootScope.editBlogObject;
+          //console.log($rootScope.editBlogObject);
+          $scope.content=$scope.getBlog.article;
+          $scope.title=$scope.getBlog.title;
+          $scope.category=$scope.getBlog.category;
+          $scope.id=$scope.getBlog.id;
+          $scope.postBy=$scope.getBlog.postBy;
+          $scope.titleImage=$scope.getBlog.titleImage;
+          $scope.metaKeyword=$scope.getBlog.metaKeyword;
+          $scope.metaDesc=$scope.getBlog.metaDesc;
+          $scope.slugURL=$scope.getBlog.slugURL;
+          $scope.shortDesc=$scope.getBlog.shortDesc;
+        }
+        $rootScope.editBlogObject=[];
+
+         $scope.options = {
+            language: 'en',
+            allowedContent: true,
+            entities: false
+          };
+
+          // Called when the editor is completely ready.
+          $scope.onReady = function() {
+            // ...
+          };
+          $scope.addBlog = function(){
+            var  data=
+              {
+                  'title': $scope.title,
+                  'author':$scope.userName,    
+                  'body': $scope.body,
+                  'userId': $scope.userId,          
+                  'imageUrl': $scope.imageUrl
+              };
+              console.log(data);
+            
+            apiFactory.postBlog(data)
+            .success(function(data,status){
+              $scope.body="";
+              $scope.BlogPostFlashMessage = true;
+                  $timeout(function () {
+                      $scope.BlogPostFlashMessage = false;
+                    },3000);
+              console.log("Success in post method");
+              // $window.location.href='#/blog/allBlogs';
+
+            })
+          }
+          
+
+            $scope.updateBlog = function(content,title){
+             var data=
+                {
+                    'id':$scope.id,
+                    'title': $scope.title,
+                    'postBy':$scope.postBy,    
+                    'category': 'HEALTHCOCO',
+                    'article': $scope.content,
+                    'userId': $scope.adminId,          
+                    "titleImage": $scope.titleImage,
+                    "metaKeyword":$scope.metaKeyword,
+                    "metaDesc":$scope.metaDesc,
+                    "slugURL":$scope.slugURL,
+                    "shortDesc":$scope.shortDesc
+                };
+               // http://52.66.42.126/healthco2admin/api/v1/admin/addBlog?access_token=d1a278ce-73e9-487e-9285-52d73cd007ba
+                console.log(data);
+              $http.post($scope.API_url+'/'+'admin/addBlog?access_token='+localStorage.access_token,data,config)
+              .success(function(data,status){
+                $scope.BlogPostFlashMessage = true;
+                  $timeout(function () {
+                      $scope.BlogPostFlashMessage = false;
+                    },3000);
+                  $window.location.href='#/blog/allBlogs';
+                console.log("Success in post method");
+
+              })
+            }
 
 
 

@@ -49,18 +49,13 @@ blogApp.controller('main_pageCtrl', function($scope,$rootScope,apiFactory,$ancho
           apiFactory.getBlogs(config)
     	    .then(function (response) {
             $scope.getBlogs = response.data.blogs;
-            console.log($scope.getBlogs);
+            $scope.countdown();
             if ($scope.getBlogs.length==0) {
               $scope.no_data_div=true;
-            }
-
-            //$scope.getBlogCount();
-            if($scope.getBlogs.length==0)
-            {
               $scope.hidePagination=true;
             }
             $scope.blogCount=response.data.count;
-            $scope.pages_with_content=Math.ceil($scope.blogCount/12);
+            $scope.pages_with_content=Math.ceil($scope.blogCount/10);
             $scope.blog_loader=false;
           })
           .catch(function(response) {
@@ -191,7 +186,37 @@ blogApp.controller('main_pageCtrl', function($scope,$rootScope,apiFactory,$ancho
             }
           }
 
-         
+         $scope.featuredBlogs=function()
+         {
+          apiFactory.featuredBlogs()
+    	    .then(function (response) {
+            $scope.getFeaturedBlogs = response.data;
+            console.log($scope.getFeaturedBlogs);
+            if ($scope.getFeaturedBlogs.length==0) {
+              $scope.no_data_div=true;
+              $scope.hidePagination=true;
+            }
+
+          })
+          .catch(function(response) {
+                  if(response.status==403)
+                  {
+                    console.log("session Expired, Login again");
+                    $location.search({});
+                    $location.path('/login');
+                    delete localStorage.session;
+                  }
+                   if(response.status==404)
+                  {
+                    $window.alert("Check your Internet Connection/page not found");
+                  }
+                  else if(response.status==500){
+                    $window.alert("Something went wrong!!");
+                  }
+                })
+        
+         }
+         $scope.featuredBlogs();
 
           
 

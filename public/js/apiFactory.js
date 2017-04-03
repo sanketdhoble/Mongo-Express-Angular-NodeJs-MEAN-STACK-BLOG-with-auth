@@ -1,10 +1,11 @@
 angular.module('blogApp')
-    .factory('apiFactory', ['$http', function($http) {
+    .factory('apiFactory', function($http) {
 
     var urlBase = '/getBlogs';
     var apiFactory = {};
 
     apiFactory.getBlogs = function (config) {
+        
         return $http.get('/blog/get',config);
     };
 
@@ -23,7 +24,15 @@ angular.module('blogApp')
     {
         return $http.get('/logout');
     }
-
+    apiFactory.featuredBlogs=function(){
+        return $http.get('/blog/featured');
+    }
+    apiFactory.postBlog=function(data){
+        return $http.post('/blog/add',data);
+    }
+    apiFactory.updateBlog=function(data){
+        return $http.put('/blog/update/'+id)
+    }
     // dataFactory.updateCustomer = function (cust) {
     //     return $http.put(urlBase + '/' + cust.ID, cust)
     // };
@@ -37,4 +46,4 @@ angular.module('blogApp')
     // };
 
     return apiFactory;
-}]);
+});

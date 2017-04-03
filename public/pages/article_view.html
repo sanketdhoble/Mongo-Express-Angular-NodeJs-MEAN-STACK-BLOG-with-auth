@@ -18,7 +18,7 @@
 		     <div class="clearfix"></div>
 		  
 		    <div class="col-sm-10 col-sm-offset-1" style="min-height: 200px">
-		 	    <div><b> {{getBlog.body}}</b></div>
+		 	    <div> <p class="" ng-bind-html='toTrustedHTML( getBlog.body )'></div>
 			</div>
 			<div class="col-sm-12">
 			    <hr>
