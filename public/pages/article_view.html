@@ -40,36 +40,22 @@
 				</div>
 			</div>
 	      </div>
-	      <div class="col-sm-4">
-		      	 <div class="col-sm-12 featured_article_style"><h2>Featured Articles </h2>
-		      	 </div>
-		      	 <div class="col-sm-12 mar_bottom line_bottom">
-			    	      <div class="img-wrapper">
-			    	        <img src="imgs/blog/img5.jpg">
-			    	      </div>
-			    	   <h4><b><p><a href="">Better Late Than Never: What To Do When a Competitor Beats You to Market</a></p></b></h4>	
-			    	   <p>By <span class="img_title">Healthcoco team</span> | Aug 3, 2016 </p>	
-			      </div>
-			      <div class="col-sm-12 mar_bottom line_bottom">
-			    	      <div class="img-wrapper">
-			    	        <img src="imgs/blog/img6.jpg">
-			    	      </div>
-			    	   <h4><b><p><a href="">With a $20 Investment, This Unemployed Veteran Fueled a Million-dollar Business</a></p></b></h4>	
-			    	   <p>By <span class="img_title">Healthcoco team</span> | Aug 3, 2016 </p>	
-			     </div>
-			     <div class="col-sm-12 mar_bottom line_bottom">
-			    	      <div class="img-wrapper">
-			    	        <img src="imgs/blog/img2.jpg">
-			    	      </div>
-			    	   <h4><b><p><a href="">Free Google Chrome Extensions Every Entrepreneur Should Install</a></p></b></h4>	
-			    	   <p>By <span class="img_title">Healthcoco team</span> | Aug 3, 2016 </p>
-			     </div>
-			     <div class="col-sm-12 mar_bottom line_bottom">
-	    	      <div class="img-wrapper">
-	    	        <img src="imgs/blog/img3.jpg">
-	    	      </div>
-	    	   <h4><b><p><a href="">How to Outsource Effectively and Earn Back Your Time</a></p></b></h4>	
-	    	   <p>By <span class="img_title">Healthcoco team</span> | Aug 3, 2016 </p>	
-	    	</div>
+	     <!-- Featured Articles (Trending) -->
+      <div class="col-sm-4">
+      	 <div class="col-sm-12 featured_article_style"><h2>Featured Articles </h2>
+      	 </div>
+      	 <div class="col-sm-12 mar_bottom line_bottom" ng-repeat="featured in getFeaturedBlogs">
+	    	    <a href="#article/{{featured._id}}">
+							<div class="img-wrapper" ng-if="featured.imageUrl!=''">
+		    	        <img ng-src="{{featured.imageUrl}}" class="img-responsive">
+							</div>
+							<div class="img-wrapper" ng-if="featured.imageUrl==''">
+								<img src="http://english.tw/wp-content/themes/qaengine/img/default-thumbnail.jpg" class="img-responsive">
+							</div>
+	    	     <h4><b><p><a href="">{{featured.title}}</a></p></b></h4>	
+	    	  	  <p>By <span class="img_title">{{featured.author}}</span> | {{featured.updated_at | date}} </p>
+	    	    </a>
+	      </div>
+      </div>
            </div>
 	</div>

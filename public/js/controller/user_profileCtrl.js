@@ -1,9 +1,8 @@
-blogApp.controller('user_profileCtrl', function($scope,$rootScope,apiFactory,$anchorScroll, $http,$window,$location,$routeParams,$window,$timeout) {
+blogApp.controller('user_profileCtrl', function($scope,$rootScope,apiFactory,$anchorScroll, $http,$window,$location,$routeParams,$window,$timeout,$route) {
 
     $scope.userBlogs=true;
 	  $scope.userName=localStorage.userName;
-    $scope.userId=$routeParams.id;
-        
+    $scope.userId=$routeParams.id;  
         $scope.hidePagination=false;
 
         // console.log(location.search);
@@ -185,10 +184,7 @@ blogApp.controller('user_profileCtrl', function($scope,$rootScope,apiFactory,$an
             entities: false
           };
 
-          // Called when the editor is completely ready.
-          $scope.onReady = function() {
-            // ...
-          };
+       
           $scope.addBlog = function(){
             var  data=
               {
@@ -208,39 +204,113 @@ blogApp.controller('user_profileCtrl', function($scope,$rootScope,apiFactory,$an
                       $scope.BlogPostFlashMessage = false;
                     },3000);
               console.log("Success in post method");
+                $scope.getBlogFunction(0);
+                  $scope.userBlogs=true;
               // $window.location.href='#/blog/allBlogs';
 
             })
+            .catch(function(response) {
+                  if(response.status==403)
+                  {
+                    console.log("session Expired, Login again");
+                    $location.search({});
+                    $location.path('/login');
+                    delete localStorage.session;
+                  }
+                   if(response.status==404)
+                  {
+                    $window.alert("Check your Internet Connection/page not found");
+                  }
+                  else if(response.status==500){
+                    $window.alert("Something went wrong!!");
+                  }
+                })
           }
-          
+         
+         $scope.clearScope=function()
+         {
+            $scope.blogId="";
+            $scope.title="";
+            $scope.imageUrl="";
+            $scope.body="";
+         }
+         
+         $scope.getBlogId=function(id,title,imageUrl,body)
+          {
+            $scope.blogId=id;
+            $scope.title=title;
+            $scope.imageUrl=imageUrl;
+            $scope.body=body;
+            $scope.userBlogs=false;
+          }
 
-            $scope.updateBlog = function(content,title){
+            $scope.updateBlog = function(title,imageUrl,body){
+             
              var data=
                 {
-                    'id':$scope.id,
-                    'title': $scope.title,
-                    'postBy':$scope.postBy,    
-                    'category': 'HEALTHCOCO',
-                    'article': $scope.content,
-                    'userId': $scope.adminId,          
-                    "titleImage": $scope.titleImage,
-                    "metaKeyword":$scope.metaKeyword,
-                    "metaDesc":$scope.metaDesc,
-                    "slugURL":$scope.slugURL,
-                    "shortDesc":$scope.shortDesc
+                    'title': title,    
+                    'imageUrl':imageUrl,   
+                    'body':body
                 };
-               // http://52.66.42.126/healthco2admin/api/v1/admin/addBlog?access_token=d1a278ce-73e9-487e-9285-52d73cd007ba
-                console.log(data);
-              $http.post($scope.API_url+'/'+'admin/addBlog?access_token='+localStorage.access_token,data,config)
+               console.log($scope.blogId);
+             apiFactory.updateBlog(data,$scope.blogId)
               .success(function(data,status){
                 $scope.BlogPostFlashMessage = true;
                   $timeout(function () {
                       $scope.BlogPostFlashMessage = false;
                     },3000);
-                  $window.location.href='#/blog/allBlogs';
-                console.log("Success in post method");
+                  $scope.getBlogFunction(0);
+                  $scope.userBlogs=true;
+                console.log("Success in put method");
 
               })
+              .catch(function(response) {
+                  if(response.status==403)
+                  {
+                    console.log("session Expired, Login again");
+                    $location.search({});
+                    $location.path('/login');
+                    delete localStorage.session;
+                  }
+                   if(response.status==404)
+                  {
+                    $window.alert("Check your Internet Connection/page not found");
+                  }
+                  else if(response.status==500){
+                    $window.alert("Something went wrong!!");
+                  }
+                })
+            }
+
+            $scope.deleteBlog=function(id)
+            {
+              apiFactory.deleteBlog(id)
+              .success(function(data,status){
+                $scope.BlogPostFlashMessage = true;
+                  $timeout(function () {
+                      $scope.BlogPostFlashMessage = false;
+                    },3000);
+                  $scope.getBlogFunction(0);
+                  $scope.userBlogs=true;
+                console.log("Success in put method");
+
+              })
+              .catch(function(response) {
+                  if(response.status==403)
+                  {
+                    console.log("session Expired, Login again");
+                    $location.search({});
+                    $location.path('/login');
+                    delete localStorage.session;
+                  }
+                   if(response.status==404)
+                  {
+                    $window.alert("Check your Internet Connection/page not found");
+                  }
+                  else if(response.status==500){
+                    $window.alert("Something went wrong!!");
+                  }
+                })
             }
 
 

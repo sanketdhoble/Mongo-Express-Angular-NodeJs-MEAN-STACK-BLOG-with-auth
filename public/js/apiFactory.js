@@ -30,8 +30,11 @@ angular.module('blogApp')
     apiFactory.postBlog=function(data){
         return $http.post('/blog/add',data);
     }
-    apiFactory.updateBlog=function(data){
-        return $http.put('/blog/update/'+id)
+    apiFactory.updateBlog=function(data,id){
+        return $http.put('/blog/update/'+id,data)
+    }
+    apiFactory.deleteBlog=function(id){
+        return $http.delete('/blog/delete/'+id);
     }
     // dataFactory.updateCustomer = function (cust) {
     //     return $http.put(urlBase + '/' + cust.ID, cust)

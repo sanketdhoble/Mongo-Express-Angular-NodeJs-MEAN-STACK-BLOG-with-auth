@@ -4,7 +4,7 @@
 		
   	<div class="container" ng-show="userBlogs">
 					<div class="col-sm-12">
-						<button style="margin-top: 26px;" ng-click="userBlogs=false" class=" btn btn-default pull-left">Add new Post</button>
+						<button style="margin-top: 26px;" ng-click="clearScope();userBlogs=false" class=" btn btn-default pull-left">Add New Post</button>
 						<span style="text-align: center;"><h3 style="padding:10px 10px;"><b>Your Posts</b></h3></span>
 					</div>
 					<div ng-show="BlogPostFlashMessage" class="col-sm-4 alert alert-success fade in div_pos ">
@@ -26,8 +26,38 @@
 		    	        <img src="http://english.tw/wp-content/themes/qaengine/img/default-thumbnail.jpg" class="img-responsive">
 		    	      </div>
 		    	    	<h4><b><p><a href="">{{blogs.title}}</a></p></b></h4>	
-	    	  			 <p>By <span class="img_title">{{blogs.author}}</span> | {{blogs.updated_at | date}} </p> 
+	    	  			 <p>
+									 By <span class="img_title text-capitalize">{{blogs.author}}</span> | {{blogs.updated_at | date}} 
+									 <span class="pull-right">
+										 <a href="" ng-click="getBlogId(blogs._id,blogs.title,blogs.imageUrl,blogs.body)">Edit</a>&nbsp;
+									 	 <a href="" data-toggle="modal" data-target="#deleteBlog{{blogs._id}}">Delete</a>
+									 </span>
+								</p> 
+								
 			    	</a>
+                      <!--Pop up delete-->
+                          <!-- Modal -->
+                          <div class="modal fade" id="deleteBlog{{blogs._id}}" role="dialog">
+                            <div class="modal-dialog">
+                            
+                              <!-- Modal content-->
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                  <h4 class="modal-title">Delete</h4>
+                                </div>
+                                <div class="modal-body">
+                                  <p>Are you sure you want to delete this blog?</p>
+                                </div>
+                                <div class="modal-footer">
+                                   <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                                  <button ng-click="deleteBlog(blogs._id)" type="button" class="btn btn-default" data-dismiss="modal">Yes</button>
+                                </div>
+                              </div>
+                              
+                            </div>
+                          </div>
+                        <!--Pop up ends-->
 		    		</div>
 		    	
 		    </div> 	
@@ -67,7 +97,7 @@
 														<div class="col-sm-9">  
 															<input ng-model="imageUrl" class="form-control input-sm"  placeholder="Image Url">
 														</div>     
-													</div
+													</div>
 									</form>
 								</div>
 							
@@ -86,7 +116,7 @@
 								</div>
 
 								<div class="col-sm-6">
-										<button class="btn btn-success btn-default" type="button" ng-click="updateBlog(content,title)"> Update Blog</button>       
+										<button class="btn btn-success btn-default" type="button" ng-click="updateBlog(title,imageUrl,body)"> Update Blog</button>       
 									</div>
 						</div>
 						<div style="margin-top:1000px">
