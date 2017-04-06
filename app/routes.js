@@ -8,6 +8,7 @@ var User=require('./models/user');
 var jwt    = require('jsonwebtoken');
 var session = require('express-session');
 var blog=require('./models/blog')(mongoose);
+const ObjectId = mongoose.Types.ObjectId;
 
 // expose the routes to our app with module.exports
 module.exports = function(app) {
@@ -201,16 +202,128 @@ module.exports = function(app) {
        
 
     }); 
-    //increase upvotes
-    app.get('/blog/upvote/:id',auth,function(req,res){
+    //increment upvotes
+    app.post('/blog/upvote/:id',auth,function(req,res){
+        //id is _id
+        var query={
+                          '_id':req.params.id,   
+                }
+         var steps=[
+                   
+                    {"$unwind": "$upvoters"},
+           
+                   
+                    {"$match": {
+                    '_id':ObjectId(req.params.id)}
+                    },
+                    {"$match": 
+                     
+                    {"upvoters.userId":req.body.userId}
 
-        blog.Blog.findByIdAndUpdate(req.params.id,{$inc: {"upvotes":1}},function(err,post){
 
-            if(err)
-                res.send(err);
-            post.upvotes=post.upvotes+1; //i have to increment it by one everytime
-            res.json(post); 
-        });
+                    },
+                    //Project the accoutns.cars object only
+                     {"$project" : {"upvoters" : 1}},
+                    // //Group and return only the car object
+                     {"$group":{"_id":"$upvoters"}}
+            ];
+             blog.Blog.aggregate(steps, function (err, user) {
+                //{'comments.upvoters': {$elemMatch: {userId: req.body.userId}}}
+                if (err){
+                    res.send(err);
+                }    
+                console.log(user);
+                if (user.length!=0) {
+                     blog.Blog.findOneAndUpdate(query,{$pull : {"upvoters": {userId: req.body.userId}}},
+                      function(err,post){
+                        if(err)
+                            {
+                                console.log(err);
+                                res.send(err);
+                            }
+                            else
+                            {
+                                
+                                blog.Blog.update(query,{'$inc':{'upvotes':-1}},function(err,post){
+
+                                    if(err)
+                                        res.send(err);
+                                    post.upvotes=post.upvotes+1; //i have to increment it by one everytime
+                                    //console.log(post);
+                                    res.json({post:post,upvote:false});
+                                    //to sort comments on basis of most upvotes
+                                 
+                                });
+                            } 
+                        });
+                
+
+
+                } else {
+                   
+                    blog.Blog.findOneAndUpdate(query,{$push : {"upvoters": {userId: req.body.userId}}},
+                      function(err,post){
+                        if(err)
+                            {
+                                console.log(err);
+                                res.send(err);
+                            }
+                            else
+                            {
+                                
+                                blog.Blog.update(query,{'$inc':{'upvotes':1}},function(err,post){
+
+                                    if(err)
+                                        res.send(err);
+                                    post.upvotes=post.upvotes+1; //i have to increment it by one everytime
+                                    //console.log(post);
+                                    res.json({post:post,upvote:true});
+                                    
+                                });
+                            } 
+                        });
+                
+
+
+                }
+
+            });
+
+        /*New new new*/
+        // blog.Blog.findOne({'upvoters': {$elemMatch: {userId: req.body.userId}}}, function (err, user) {
+
+        //         if (err){
+        //             return done(err);
+        //         }    
+
+        //         if (user) {
+        //             res.status(410).json({ success: false, message: 'Already upvoted the post' });
+
+        //         } else {
+        //             blog.Blog.findByIdAndUpdate(req.params.id,{$push : {"upvoters": {userId: req.body.userId}}},
+        //                 function(err,post){
+        //             if(err)
+        //                 {
+        //                     console.log(err);
+        //                     res.send(err);
+        //                 }
+        //                 else{
+        //                     blog.Blog.findByIdAndUpdate(req.params.id,{$inc: {"upvotes":1}},function(err,post){
+        //                         if(err)
+        //                             res.send(err);
+        //                         post.upvotes=post.upvotes+1; //I have to increment it by one everytime
+        //                         res.json(post); 
+        //                     });
+        //                 } 
+        //             });
+
+        //         }
+
+        //     });
+
+
+
+       
 
     });
     // SearchBlog
@@ -269,26 +382,141 @@ module.exports = function(app) {
     });
 
     //increment comment upvotes
-    app.get('/blog/comments/upvote/:id/:comment_id',auth,function(req,res){
+    app.post('/blog/comments/upvote/:id/:comment_id',auth,function(req,res){
+            var query={
+                          '_id':req.params.id,
+                          'comments._id':req.params.comment_id
+                        }
+            var steps=[
+                   
+                    {"$unwind": "$comments"},
+                    //De-normalized the nested array of comments and upvoters
+                    {"$unwind": "$comments.upvoters"},
+                    //match id with params.id
+                    {"$match": {
+                    'comments._id':ObjectId(req.params.comment_id)}
+                    },
+                    {"$match": 
+                     
+                    {"comments.upvoters.userId":req.body.userId}
 
-        query={
-            '_id':req.params.id,
-            'comments._id':req.params.comment_id
-            }
-        blog.Blog.update(query,{'$inc':{'comments.$.upvotes':1}},function(err,post){
 
-            if(err)
-                res.send(err);
-            post.upvotes=post.upvotes+1; //i have to increment it by one everytime
-            //console.log(post);
-            blog.Blog.findByIdAndUpdate(req.params.id, {$push : {"comments" :{$each  : [] , $sort : {"upvotes" : -1}}}},{safe: true, upsert: true, new : true},function(err,details){
-
-                if(err)
+                    },
+                    //Project the comments.upvoters object only
+                     {"$project" : {"comments.upvoters" : 1}},
+                    // //Group and return only the upvoters object
+                     {"$group":{"_id":"$comments.upvoters"}}
+            ];
+             blog.Blog.aggregate(steps, function (err, user) {
+                //{'comments.upvoters': {$elemMatch: {userId: req.body.userId}}}
+                if (err){
                     res.send(err);
-                res.json(details);
-            })
+                }    
+                
+                if (user.length!=0) {
+                     blog.Blog.findOneAndUpdate(query,{$pull : {"comments.$.upvoters": {userId: req.body.userId}}},
+                      function(err,post){
+                        if(err)
+                            {
+                                console.log(err);
+                                res.send(err);
+                            }
+                            else
+                            {
+                                
+                                blog.Blog.update(query,{'$inc':{'comments.$.upvotes':-1}},function(err,post){
+
+                                    if(err)
+                                        res.send(err);
+                                    post.upvotes=post.upvotes+1; //i have to increment it by one everytime
+                                    //console.log(post);
+
+                                    //to sort comments on basis of most upvotes
+                                    blog.Blog.findByIdAndUpdate(req.params.id, {$push : {"comments" :{$each  : [] , $sort : {"upvotes" : -1}}}},{safe: true, upsert: true, new : true},function(err,details){
+
+                                        if(err)
+                                            res.send(err);
+                                        res.json(details);
+                                    })
+                                    
+                                });
+                            } 
+                        });
+
+                } else {
+                   
+                    blog.Blog.findOneAndUpdate(query,{$push : {"comments.$.upvoters": {userId: req.body.userId}}},
+                      function(err,post){
+                        if(err)
+                            {
+                                console.log(err);
+                                res.send(err);
+                            }
+                            else
+                            {
+                                
+                                blog.Blog.update(query,{'$inc':{'comments.$.upvotes':1}},function(err,post){
+
+                                    if(err)
+                                        res.send(err);
+                                    post.upvotes=post.upvotes+1; //i have to increment it by one everytime
+                                    //console.log(post);
+
+                                    //to sort comments on basis of most upvotes
+                                    blog.Blog.findByIdAndUpdate(req.params.id, {$push : {"comments" :{$each  : [] , $sort : {"upvotes" : -1}}}},{safe: true, upsert: true, new : true},function(err,details){
+
+                                        if(err)
+                                            res.send(err);
+                                        res.json(details);
+                                    })
+                                    
+                                });
+                            } 
+                        });
+                
+
+
+                }
+
+            });
+
+        //     blog.Blog.findByIdAndUpdate(req.params.id,{$push : {"upvoters": {userId: req.body.userId}}},
+        //                 function(err,post){
+        //             if(err)
+        //                 {
+        //                     console.log(err);
+        //                     res.send(err);
+        //                 }
+        //                 else{
+        //                     blog.Blog.findByIdAndUpdate(req.params.id,{$inc: {"upvotes":1}},function(err,post){
+        //                         if(err)
+        //                             res.send(err);
+        //                         post.upvotes=post.upvotes+1; //I have to increment it by one everytime
+        //                         res.json(post); 
+        //                     });
+        //                 } 
+        //             });
+
+        // query={
+        //     '_id':req.params.id,
+        //     'comments._id':req.params.comment_id
+        //     }
+        // blog.Blog.update(query,{'$inc':{'comments.$.upvotes':1}},function(err,post){
+
+        //     if(err)
+        //         res.send(err);
+        //     post.upvotes=post.upvotes+1; //i have to increment it by one everytime
+        //     //console.log(post);
+
+        //     //to sort comments on basis of most upvotes
+        //     blog.Blog.findByIdAndUpdate(req.params.id, {$push : {"comments" :{$each  : [] , $sort : {"upvotes" : -1}}}},{safe: true, upsert: true, new : true},function(err,details){
+
+        //         if(err)
+        //             res.send(err);
+        //         res.json(details);
+        //     })
             
-        });
+        // });
 
     });
 

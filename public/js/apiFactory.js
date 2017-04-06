@@ -36,6 +36,11 @@ angular.module('blogApp')
     apiFactory.deleteBlog=function(id){
         return $http.delete('/blog/delete/'+id);
     }
+    apiFactory.upvoteBlog=function(data,id){
+        return $http.post('/blog/upvote/'+id,data);
+    }
+
+
     // dataFactory.updateCustomer = function (cust) {
     //     return $http.put(urlBase + '/' + cust.ID, cust)
     // };

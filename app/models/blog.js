@@ -18,6 +18,9 @@ module.exports = function(mongoose) {
         author:String,
         title : {type:String},
         body: String,
+        upvoters:[{
+                    userId:{type:String} 
+                }],
         upvotes:{type:Number,default:0},
         done : Boolean,
         userId:String,
@@ -26,6 +29,9 @@ module.exports = function(mongoose) {
             person:String,
             comment:String,
             created_at: { type: Date, default: Date.now },
+            upvoters:[{
+                    userId:{type:String} 
+                }],
             upvotes:{type:Number,default:0},
             userId:String
             // commentId: {
