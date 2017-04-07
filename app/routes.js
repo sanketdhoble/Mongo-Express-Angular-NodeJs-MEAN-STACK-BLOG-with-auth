@@ -370,8 +370,8 @@ module.exports = function(app) {
 
     }); 
     //update comment
-    app.post('/blog/comments/update/:id/:comment_id',auth,function(req,res){
-        query={'_id':req.params.id,'comments._id':req.params.comment_id}
+    app.post('/blog/comments/update',auth,function(req,res){
+        query={'_id':req.body.id,'comments._id':req.body.comment_id}
         blog.Blog.update(query, {'$set': {'comments.$.comment': req.body.comment}},
             function(err,post){
                      if(err)
@@ -382,10 +382,10 @@ module.exports = function(app) {
     });
 
     //increment comment upvotes
-    app.post('/blog/comments/upvote/:id/:comment_id',auth,function(req,res){
+    app.post('/blog/comments/upvote',auth,function(req,res){
             var query={
-                          '_id':req.params.id,
-                          'comments._id':req.params.comment_id
+                          '_id':req.body.id,
+                          'comments._id':req.body.comment_id
                         }
             var steps=[
                    
@@ -394,7 +394,7 @@ module.exports = function(app) {
                     {"$unwind": "$comments.upvoters"},
                     //match id with params.id
                     {"$match": {
-                    'comments._id':ObjectId(req.params.comment_id)}
+                    'comments._id':ObjectId(req.body.comment_id)}
                     },
                     {"$match": 
                      
@@ -432,7 +432,7 @@ module.exports = function(app) {
                                     //console.log(post);
 
                                     //to sort comments on basis of most upvotes
-                                    blog.Blog.findByIdAndUpdate(req.params.id, {$push : {"comments" :{$each  : [] , $sort : {"upvotes" : -1}}}},{safe: true, upsert: true, new : true},function(err,details){
+                                    blog.Blog.findByIdAndUpdate(req.body.id, {$push : {"comments" :{$each  : [] , $sort : {"upvotes" : -1}}}},{safe: true, upsert: true, new : true},function(err,details){
 
                                         if(err)
                                             res.send(err);
@@ -463,7 +463,7 @@ module.exports = function(app) {
                                     //console.log(post);
 
                                     //to sort comments on basis of most upvotes
-                                    blog.Blog.findByIdAndUpdate(req.params.id, {$push : {"comments" :{$each  : [] , $sort : {"upvotes" : -1}}}},{safe: true, upsert: true, new : true},function(err,details){
+                                    blog.Blog.findByIdAndUpdate(req.body.id, {$push : {"comments" :{$each  : [] , $sort : {"upvotes" : -1}}}},{safe: true, upsert: true, new : true},function(err,details){
 
                                         if(err)
                                             res.send(err);
@@ -522,13 +522,13 @@ module.exports = function(app) {
 
 
     //remove comments
-    app.post('/blog/comments/delete/:id/:comment_id',auth,function(req,res){
+    app.post('/blog/comments/delete',auth,function(req,res){
 
         var comment={person:req.body.person,comment:req.body.comment};
         console.log(req.body);
         console.log(comment);
         // console.log(req.body.comments[0].person);
-        blog.Blog.findOneAndUpdate(req.params.id, {$pull: { comments :{ _id:req.params.comment_id} }},{safe: true, upsert: true, new : true},function (err, post) {
+        blog.Blog.findOneAndUpdate(req.body.id, {$pull: { comments :{ _id:req.body.comment_id} }},{safe: true, upsert: true, new : true},function (err, post) {
             if (err)
                 res.send(err);
             console.log(post);

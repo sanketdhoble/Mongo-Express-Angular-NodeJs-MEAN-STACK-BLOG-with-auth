@@ -13,6 +13,9 @@ p>a:hover {
 .mar_top30{
   margin-top: 30px;
 }
+.mar_top20{
+  margin-top: 20px;
+}
 
 p>a:link{
   color:black;
@@ -177,7 +180,7 @@ hr.vertical{
     transition: all 400ms linear;
     }
 }
-
+.color-blue{color: #0077b5}
 .blog-pages{ text-align: center; z-index: 0; }
 .page-btn{ display: inline; overflow: hidden; height: 30px; width: 30px; font-size: 12px; margin: 3px; background-color: #ffffff; border: 1px solid #dedede; color: #0077b5; }
 .page-btn.active { background-color: #0077b5; color: #ffffff; border-color: #0077b5; }
@@ -216,11 +219,21 @@ margin-top:5px;font-size:16px}
     z-index: 2;
     opacity: 0.9 !important;
     margin-top: -56px;}
-.upvote-btn{  height: 35px;color:#2b6dad;border-radius:5px; border: 1px solid #bbcadc; outline: none; background-color: #f1f8fb; font-size: 15px}
+.upvote-btn{  height: 35px;color:#2b6dad;border-radius:4px; border: 1px solid #bbcadc; outline: none; background-color: #f1f8fb; font-size: 15px}
 .upvote-btn:hover {
     background-color: #ccc;
+    border:1px solid black;
 }
 .upvote_button_active{background-color: #f6f6f6 !important;color:#999999;border:1px solid #dddddd}
+.comment-btn{height:35px;color:white;background-color:#3e78ad;border: 1px solid #3e64ad;border-radius: 3px;font-size:15px}
+.comment-btn:hover{
+    border:1px solid black;
+}
+.comment-btn-sm{height:28px;color:white;background-color:#3e78ad;border: 1px solid #3e64ad;border-radius: 3px;font-size:14px}
+.comment-btn-sm:hover{
+    border:1px solid black;
+}
+.form-control.textarea{font-size: 16px}
 /*.move_right{margin-left:70px;}*/
 
 /*.centered-and-cropped { object-fit: cover }*/

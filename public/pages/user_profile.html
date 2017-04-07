@@ -1,10 +1,10 @@
+<div ng-include="'pages/header.html'"></div>
 <div class="col-sm-12">
-  <div ng-include="'pages/header.html'"></div>
   <div class="profile_content">
 		
   	<div class="container" ng-show="userBlogs">
 					<div class="col-sm-12">
-						<button style="margin-top: 26px;" ng-click="clearScope();userBlogs=false" class=" btn btn-default pull-left">Add New Post</button>
+						<button style="margin-top: 26px;" ng-click="clearScope();userBlogs=false;addBlogButton=true" class=" btn btn-default pull-left">Add New Post</button>
 						<span style="text-align: center;"><h3 style="padding:10px 10px;"><b>Your Posts</b></h3></span>
 					</div>
 					<div ng-show="BlogPostFlashMessage" class="col-sm-4 alert alert-success fade in div_pos ">
@@ -79,7 +79,7 @@
     </div>
 		<div class="container" ng-hide="userBlogs">
 				<div class="col-sm-12">
-						<button style="margin-top: 26px;" ng-click="userBlogs=true" class=" btn btn-default pull-left">Show My Blogs</button>
+						<button style="margin-top: 26px;" ng-click="userBlogs=true;addBlogButton=false" class=" btn btn-default pull-left">Show My Blogs</button>
 						<span style="text-align: center;"><h3 style="padding:10px 10px;"><b>Add Posts</b></h3></span>
 				</div>
 				<div class="col-sm-12"    style=" margin-top: 35px;">
@@ -110,12 +110,12 @@
 							<textarea ckeditor="editorOptions" ng-model="body"></textarea>
 				
 						</div>
-						<div class="col-sm-12 mar_top10">
-								<div class="col-sm-6">
-									<button class="btn btn-success btn-default" type="button" ng-click="addBlog()"> Add New Blog</button> and redirect to blogList
+						<div class="col-sm-12 mar_top20">
+								<div class="col-sm-6" ng-if="addBlogButton==true">
+									<button class="btn btn-success btn-default" type="button" ng-click="addBlog()"> Add New Blog</button>
 								</div>
 
-								<div class="col-sm-6">
+								<div class="col-sm-6" ng-if="addBlogButton==false">
 										<button class="btn btn-success btn-default" type="button" ng-click="updateBlog(title,imageUrl,body)"> Update Blog</button>       
 									</div>
 						</div>

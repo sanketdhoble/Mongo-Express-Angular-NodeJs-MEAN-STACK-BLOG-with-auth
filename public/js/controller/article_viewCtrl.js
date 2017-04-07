@@ -1,6 +1,11 @@
 blogApp.controller('article_viewCtrl', function($scope,apiFactory,$timeout,$location,$anchorScroll,$routeParams,$sce, $http, $window) {
   $scope.id = $routeParams.id;
+  $scope.userName=localStorage.userName;
+  $scope.userId=localStorage.userId;
   $anchorScroll();
+  $scope.upvotedComment=[];
+  var flag=0;
+  $scope.articleGet=function(){
     apiFactory.getBlogArticle($scope.id)
     	    .then(function (response) {
             $scope.getBlog = response.data;
@@ -13,12 +18,42 @@ blogApp.controller('article_viewCtrl', function($scope,apiFactory,$timeout,$loca
                 if($scope.getBlog.upvoters[i].userId==localStorage.userId)
                 {
                   $scope.upvote=true;
-                  console.log("yo");
                 }
+                 
               }
             }
             else
-            $scope.upvote=false;
+            {
+              $scope.upvote=false;
+            }
+            if($scope.getBlog.comments.length!=0)
+              {
+                for(var i=0;i<$scope.getBlog.comments.length!=0;i++)
+                  { 
+                    if($scope.getBlog.comments[i].upvoters.length!=0)
+                    {
+                       
+                      for(var j=0;j<$scope.getBlog.comments[i].upvoters.length;j++)
+                        {
+                         flag=1;
+                          if($scope.getBlog.comments[i].upvoters[j].userId==localStorage.userId)
+                            {
+                              $scope.upvotedComment[i]=true;
+                              flag=0;
+                              break;
+                            }
+                          
+                        }
+                         if(flag==1)
+                            {
+                              $scope.upvotedComment[i]=false;
+                            }   
+                    }
+                 
+                }
+              
+            }
+
           })
            .catch(function(response) {
                   if(response.status==403)
@@ -36,6 +71,8 @@ blogApp.controller('article_viewCtrl', function($scope,apiFactory,$timeout,$loca
                     $window.alert("Something went wrong!!");
                   }
                 })
+    }
+    $scope.articleGet();
 
     $scope.toTrustedHTML = function(html){
 		    return $sce.trustAsHtml(html);
@@ -77,7 +114,7 @@ blogApp.controller('article_viewCtrl', function($scope,apiFactory,$timeout,$loca
          $scope.upvoteFunc=function()
          {
           var data={
-            "userId":localStorage.userId
+            "userId":$scope.userId
           }
           apiFactory.upvoteBlog(data,$scope.id)
           .then(function (response) {
@@ -113,6 +150,147 @@ blogApp.controller('article_viewCtrl', function($scope,apiFactory,$timeout,$loca
 
          }
 
+         $scope.commentFunc=function()
+         {
+           console.log($scope.comment);
+           if($scope.comment==""||$scope.comment==undefined)
+           {
+             return;
+           }
+          
+            var data={
+              "person":$scope.userName,
+              "comment":$scope.comment,
+              "userId":$scope.userId
+            }
+            apiFactory.commentBlog(data,$scope.id)
+            .then(function (response) {
+            $scope.getUpvoteResponse = response.data;
+            $scope.comment="";
+            $scope.articleGet();
+          })
+          .catch(function(response) {
+              if(response.status==403)
+              {
+                console.log("session Expired, Login again");
+                $location.search({});
+                $location.path('/login');
+                delete localStorage.session;
+              }
+                if(response.status==404)
+              {
+                $window.alert("Check your Internet Connection/page not found");
+              }
+              else if(response.status==500){
+                $window.alert("Something went wrong!!");
+              }
+            });
+         }
+
+         $scope.updateComment=function(comment_id,comment)
+         {
+           var data={
+             "id":$scope.id,
+             "comment_id":comment_id,
+             "comment":comment
+           }
+           apiFactory.updateComment(data)
+            .then(function (response) {
+            $scope.getUpvoteResponse = response.data;
+            $scope.editComment=false;
+            $scope.showcancel=false;
+            $scope.articleGet();
+          })
+          .catch(function(response) {
+              if(response.status==403)
+              {
+                console.log("session Expired, Login again");
+                $location.search({});
+                $location.path('/login');
+                delete localStorage.session;
+              }
+                if(response.status==404)
+              {
+                $window.alert("Check your Internet Connection/page not found");
+              }
+              else if(response.status==500){
+                $window.alert("Something went wrong!!");
+              }
+            });
+
+       }
+
+
+       $scope.deleteComment=function(comment_id)
+         {
+           var data={
+             "id":$scope.id,
+             "comment_id":comment_id
+           }
+           apiFactory.deleteComment(data)
+            .then(function (response) {
+            $scope.getDeleteCommentResponse = response.data;
+            $scope.articleGet();
+          })
+          .catch(function(response) {
+              if(response.status==403)
+              {
+                console.log("session Expired, Login again");
+                $location.search({});
+                $location.path('/login');
+                delete localStorage.session;
+              }
+                if(response.status==404)
+              {
+                $window.alert("Check your Internet Connection/page not found");
+              }
+              else if(response.status==500){
+                $window.alert("Something went wrong!!");
+              }
+            });
+  
+         }
+
+         $scope.upvoteComment=function(comment_id,index)
+         {
+           console.log(comment_id);
+           var data={
+             "id":$scope.id,
+             "comment_id":comment_id,
+             "userId":$scope.userId
+           }
+          apiFactory.upvoteComment(data)
+           .then(function (response) {
+            $scope.getUpvoteCommentResponse = response.data;
+            if($scope.upvotedComment[index]==false)
+            {
+              $scope.upvotedComment[index]=true;
+            }
+            else
+            {
+              $scope.upvotedComment[index]=false;
+            }
+            $scope.articleGet();
+          })
+          .catch(function(response) {
+              if(response.status==403)
+              {
+                console.log("session Expired, Login again");
+                $location.search({});
+                $location.path('/login');
+                delete localStorage.session;
+              }
+                if(response.status==404)
+              {
+                $window.alert("Check your Internet Connection/page not found");
+              }
+              else if(response.status==500){
+                $window.alert("Something went wrong!!");
+              }
+            });
+
+
+         }
 
 
   });

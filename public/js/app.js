@@ -1,5 +1,5 @@
 
-	var blogApp = angular.module('blogApp', ['ngRoute', 'naif.base64','ui.bootstrap','ngSanitize','ngCkeditor']);
+	var blogApp = angular.module('blogApp', ['ngRoute', 'naif.base64','ui.bootstrap','ngSanitize','ngCkeditor','angular-autogrow']);
 
 
 

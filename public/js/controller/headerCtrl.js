@@ -18,9 +18,13 @@ blogApp.controller('headerCtrl', function($scope,$rootScope,apiFactory,$anchorSc
                $window.alert("Registration successful,login to view blogs");
               $scope.userName=$scope.postResponse.username;
               $scope.userId=$scope.postResponse.userId;
+              $scope.uname="";
+              $scope.pass="";
               $scope.show_reg=true;
             })
             .catch(function(response) {
+              $scope.uname="";
+              $scope.pass="";
               if(response.status==409)
                   { console.log(response);
                     $window.alert("Username already present, Register with another one :)");

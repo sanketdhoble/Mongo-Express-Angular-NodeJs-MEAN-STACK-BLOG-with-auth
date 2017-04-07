@@ -242,6 +242,7 @@ blogApp.controller('user_profileCtrl', function($scope,$rootScope,apiFactory,$an
             $scope.imageUrl=imageUrl;
             $scope.body=body;
             $scope.userBlogs=false;
+            $scope.addBlogButton=false;
           }
 
             $scope.updateBlog = function(title,imageUrl,body){

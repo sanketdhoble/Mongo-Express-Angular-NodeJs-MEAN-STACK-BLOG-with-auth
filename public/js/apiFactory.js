@@ -39,7 +39,22 @@ angular.module('blogApp')
     apiFactory.upvoteBlog=function(data,id){
         return $http.post('/blog/upvote/'+id,data);
     }
-
+    apiFactory.commentBlog=function(data,id)
+    {
+        return $http.post('/blog/comments/add/'+id,data);
+    }
+    apiFactory.updateComment=function(data)
+    {
+        return $http.post('/blog/comments/update',data);
+    }
+     apiFactory.deleteComment=function(data)
+    {
+        return $http.post('/blog/comments/delete',data);
+    }
+     apiFactory.upvoteComment=function(data)
+    {
+        return $http.post('/blog/comments/upvote',data);
+    }
 
     // dataFactory.updateCustomer = function (cust) {
     //     return $http.put(urlBase + '/' + cust.ID, cust)
