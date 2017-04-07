@@ -105,7 +105,7 @@ module.exports = function(app) {
         blog.Blog.find(query)
         .limit(size)
         .skip(size*page)
-        // .sort([[ 'upvotes', 'descending']])
+        .sort([[ 'created_at', 'descending']])
         .exec(function(err, data) {
             if (err)
                 res.send(err)

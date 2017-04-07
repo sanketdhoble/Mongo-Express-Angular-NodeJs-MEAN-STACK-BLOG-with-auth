@@ -20,7 +20,7 @@
     <div class="container">
 
       <div class="col-sm-8 border_right ">
-					<div class="no-post" ng-show="no_data_div" style="">No post to show</div>
+					<div class="no-post" ng-show="no_data_div" >No post to show</div>
             <div ng-repeat="blogs in getBlogs track by $index">
             	<div class="clearfix" ng-if="$index % 2 == 0"></div>
 	            
@@ -33,7 +33,7 @@
 		    	        <img src="http://english.tw/wp-content/themes/qaengine/img/default-thumbnail.jpg" class="img-responsive">
 		    	      </div>
 		    	    	<h4><b><p><a href="">{{blogs.title}}</a></p></b></h4>	
-	    	  			 <p>By <span class="img_title">{{blogs.author}}</span> | {{blogs.updated_at | date}} </p> 
+	    	  			 <p>By <span class="img_title text-capitalize">{{blogs.author}}</span> | {{blogs.updated_at | date}} </p> 
 			    	</a>
 		    		</div>
 		    	

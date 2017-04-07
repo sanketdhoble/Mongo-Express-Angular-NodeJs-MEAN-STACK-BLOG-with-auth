@@ -38,7 +38,7 @@ blogApp.controller('main_pageCtrl', function($scope,$rootScope,apiFactory,$ancho
           var config={
                 params:{
                   'page':$scope.pageno,
-                  'size':'10',
+                  'size':'8',
                   'searchTerm':$scope.searchTerm
               }
           }
@@ -55,7 +55,7 @@ blogApp.controller('main_pageCtrl', function($scope,$rootScope,apiFactory,$ancho
               $scope.hidePagination=true;
             }
             $scope.blogCount=response.data.count;
-            $scope.pages_with_content=Math.ceil($scope.blogCount/10);
+            $scope.pages_with_content=Math.ceil($scope.blogCount/8);
             $scope.blog_loader=false;
           })
           .catch(function(response) {
