@@ -524,11 +524,12 @@ module.exports = function(app) {
     //remove comments
     app.post('/blog/comments/delete',auth,function(req,res){
 
-        var comment={person:req.body.person,comment:req.body.comment};
-        console.log(req.body);
-        console.log(comment);
+         var query={
+                '_id':req.body.id,
+                'comments._id':req.body.comment_id
+                }
         // console.log(req.body.comments[0].person);
-        blog.Blog.findOneAndUpdate(req.body.id, {$pull: { comments :{ _id:req.body.comment_id} }},{safe: true, upsert: true, new : true},function (err, post) {
+        blog.Blog.findOneAndUpdate(query, {$pull: { comments :{ _id:req.body.comment_id} }},{safe: true, upsert: true, new : true},function (err, post) {
             if (err)
                 res.send(err);
             console.log(post);
