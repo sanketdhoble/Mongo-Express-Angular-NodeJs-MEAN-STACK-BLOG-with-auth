@@ -17,7 +17,7 @@ Route Restrictions to some pages requiring user login.<br />
 handling server authentication with localStorage.<br />
 <br />
 
-# Instructions to run
+## Instructions to run
 Clone the project
 ```
 git clone https://github.com/vigilante95/Mongo-Express-Angular-NodeJs-MEAN-STACK-BLOG-with-auth.git
@@ -39,6 +39,6 @@ Your server will be setup and ready for use.
 * Go to browser and type `localhost:8888` in place of url.
 * Register user by giving basic details.
 * Login from the same screen.  
-`Note: Ha
 
-*APP RUNNING* on Heroku server @ www.testblog.ga 
+
+#### APP RUNNING on Heroku server @ www.testblog.ga 
