@@ -16,9 +16,29 @@ ANGULARJS:<br />
 Route Restrictions to some pages requiring user login.<br />
 handling server authentication with localStorage.<br />
 <br />
-RUNNING APP:<br />
-1)download or clone this project.<br />
-2)Inside the folder, command : *npm install*<br />
-3)Run the app : nodejs server.js or nodemon server.js
+
+# Instructions to run
+Clone the project
+```
+git clone https://github.com/vigilante95/Mongo-Express-Angular-NodeJs-MEAN-STACK-BLOG-with-auth.git
+```
+
+### DataBase - Mongo
+* Check if mongodb service is running in your machine else start the service.
+
+### Server
+* You need to have node and npm installed in your machine.
+* open up your teminal or command prompt go to the directory `chat`
+* Do install all dependencies using  
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`npm install`  
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`npm install -g nodemon`  
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`nodejs server.js  or nodemon server.js`  
+Your server will be setup and ready for use.
+
+### UI
+* Go to browser and type `localhost:8888` in place of url.
+* Register user by giving basic details.
+* Login from the same screen.  
+`Note: Ha
 
 *APP RUNNING* on Heroku server @ www.testblog.ga 
