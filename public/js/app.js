@@ -120,7 +120,7 @@ blogApp.config(function($routeProvider) {
         
         .when('/login', {
             templateUrl : 'pages/login.html',
-            controller  : 'headerCtrl',
+            controller  : 'loginCtrl',
             requireLogin:false
         })
         .when('/welcome',{

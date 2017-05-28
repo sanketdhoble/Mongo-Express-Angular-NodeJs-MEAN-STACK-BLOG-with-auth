@@ -1,4 +1,4 @@
-blogApp.controller('headerCtrl', function($scope,$rootScope,apiFactory,$anchorScroll, $http,$window,$location,$routeParams,$timeout) {
+blogApp.controller('loginCtrl', function($scope,$rootScope,apiFactory,$anchorScroll, $http,$window,$location,$routeParams,$timeout) {
 
 
       $scope.show_reg=true;
