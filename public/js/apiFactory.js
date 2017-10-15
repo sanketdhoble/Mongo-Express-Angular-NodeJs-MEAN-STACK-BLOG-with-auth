@@ -56,17 +56,5 @@ angular.module('blogApp')
         return $http.post('/blog/comments/upvote',data);
     }
 
-    // dataFactory.updateCustomer = function (cust) {
-    //     return $http.put(urlBase + '/' + cust.ID, cust)
-    // };
-
-    // dataFactory.deleteCustomer = function (id) {
-    //     return $http.delete(urlBase + '/' + id);
-    // };
-
-    // dataFactory.getOrders = function (id) {
-    //     return $http.get(urlBase + '/' + id + '/orders');
-    // };
-
     return apiFactory;
 });
